@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Complaints & Analytics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-200 to-indigo-300 min-h-screen flex flex-col items-center">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-700 text-white py-4 px-6 w-full flex justify-between items-center shadow-lg">
+    <h1 class="text-2xl font-bold flex items-center">
+      <i class="fas fa-filter text-3xl mr-2"></i> Filter Complaints & Analytics
+    </h1>
+    <a href="officer-dashboard.html" class="text-lg bg-gray-800 px-4 py-2 rounded-xl hover:bg-gray-900 transition shadow-md">
+      <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+    </a>
+  </nav>
+
+  <!-- Analytics Section -->
+  <section class="w-full max-w-4xl bg-white shadow-2xl rounded-2xl p-6 mt-10 text-center ml-4">
+    <h3 class="text-2xl font-semibold text-gray-700 mb-4">Analytics & Insights</h3>
+    <div class="grid grid-cols-2 gap-4 text-lg">
+      <div class="bg-gray-100 p-4 rounded-xl shadow-md">
+        <p class="text-blue-700 font-semibold">Total Complaints:</p>
+        <p id="totalComplaints" class="text-2xl font-bold">0</p>
+      </div>
+      <div class="bg-gray-100 p-4 rounded-xl shadow-md">
+        <p class="text-red-600 font-semibold">Pending:</p>
+        <p id="pendingCount" class="text-2xl font-bold">0</p>
+      </div>
+      <div class="bg-gray-100 p-4 rounded-xl shadow-md">
+        <p class="text-yellow-600 font-semibold">In Progress:</p>
+        <p id="progressCount" class="text-2xl font-bold">0</p>
+      </div>
+      <div class="bg-gray-100 p-4 rounded-xl shadow-md">
+        <p class="text-green-600 font-semibold">Resolved:</p>
+        <p id="resolvedCount" class="text-2xl font-bold">0</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chart Section -->
+  <section class="w-full max-w-4xl mt-6 flex justify-center">
+    <div class="w-80 h-80">
+      <canvas id="complaintsChart"></canvas>
+    </div>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="w-full max-w-2xl bg-white shadow-2xl rounded-2xl p-6 mt-10 text-center">
+    <h3 class="text-2xl font-semibold text-gray-700 mb-4">Filter Complaints by Status</h3>
+    <form id="filterStatusForm" class="flex flex-col items-center">
+      <select id="filterStatus" required class="w-full p-3 text-lg border rounded-xl">
+        <option value="all">All</option>
+        <option value="pending">Pending</option>
+        <option value="in progress">In Progress</option>
+        <option value="resolved">Resolved</option>
+      </select>
+      <button type="submit" class="mt-4 bg-blue-600 text-white py-3 px-6 text-lg font-semibold rounded-xl hover:bg-blue-700">
+        <i class="fas fa-filter mr-2"></i> Apply Filter
+      </button>
+    </form>
+  </section>
+
+  <!-- Filtered Complaints List -->
+  <section class="w-full max-w-2xl mt-8">
+    <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">Filtered Complaints</h3>
+    <ul id="filteredComplaints" class="bg-white shadow-2xl rounded-2xl p-6 space-y-4"></ul>
+    <p id="noComplaintsMessage" class="text-gray-500 text-center hidden">No complaints found for this status</p>
+  </section>
+
+  <script>
+    const apiUrl = "http://localhost:5000/api/complaints"; // Replace with your actual backend API
+
+    async function fetchComplaints() {
+  try {
+    const token = localStorage.getItem("officerToken"); // Make sure this is saved on login
+    const response = await fetch(apiUrl, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch complaints");
+
+    const complaints = await response.json();
+    updateAnalytics(complaints);
+    return complaints;
+  } catch (error) {
+    console.error("Error fetching complaints:", error);
+    return [];
+  }
+}
+
+
+    function updateAnalytics(complaints) {
+      const total = complaints.length;
+      const pending = complaints.filter(c => c.status === "pending").length;
+      const inProgress = complaints.filter(c => c.status === "in progress").length;
+      const resolved = complaints.filter(c => c.status === "resolved").length;
+
+      document.getElementById("totalComplaints").innerText = total;
+      document.getElementById("pendingCount").innerText = pending;
+      document.getElementById("progressCount").innerText = inProgress;
+      document.getElementById("resolvedCount").innerText = resolved;
+
+      drawChart(pending, inProgress, resolved);
+    }
+
+    function drawChart(pending, inProgress, resolved) {
+      const ctx = document.getElementById("complaintsChart").getContext("2d");
+
+      if (window.myChart) {
+        window.myChart.destroy();
+      }
+
+      window.myChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: ["Pending", "In Progress", "Resolved"],
+          datasets: [{
+            data: [pending, inProgress, resolved],
+            backgroundColor: ["#ef4444", "#facc15", "#22c55e"]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    }
+
+    async function filterComplaints(status) {
+      const complaints = await fetchComplaints();
+      const complaintsList = document.getElementById("filteredComplaints");
+      const noComplaintsMessage = document.getElementById("noComplaintsMessage");
+      complaintsList.innerHTML = "";
+
+      let filteredComplaints = status === "all" ? complaints : complaints.filter(c => c.status === status);
+
+      if (filteredComplaints.length === 0) {
+        noComplaintsMessage.classList.remove("hidden");
+      } else {
+        noComplaintsMessage.classList.add("hidden");
+        filteredComplaints.forEach(complaint => {
+          complaintsList.innerHTML += `
+            <li class="bg-gray-100 p-4 rounded-lg shadow flex justify-between items-center">
+              <div>
+                <h3 class="text-lg font-semibold">${complaint.subject}</h3>
+                <p class="text-gray-600 text-sm">${complaint.description}</p>
+              </div>
+              <span class="px-3 py-1 rounded-full text-sm ${
+                complaint.status === "resolved" ? "bg-green-500 text-white" :
+                complaint.status === "in progress" ? "bg-yellow-500 text-white" :
+                "bg-red-500 text-white"
+              }">
+                ${complaint.status}
+              </span>
+            </li>
+          `;
+        });
+      }
+    }
+
+    document.getElementById("filterStatusForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const status = document.getElementById("filterStatus").value;
+      filterComplaints(status);
+    });
+
+    async function autoUpdate() {
+      await fetchComplaints();
+      setInterval(fetchComplaints, 5000); // Auto-update every 5 seconds
+    }
+
+    autoUpdate();
+  </script>
+
+</body>
+</html>

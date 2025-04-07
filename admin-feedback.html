@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Feedback</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6 min-h-screen">
+  <h2 class="text-3xl font-bold text-blue-600 mb-6">Admin Panel - Feedback</h2>
+
+  <div id="feedbackContainer" class="bg-white p-6 rounded-xl shadow-lg">
+    <h3 class="text-xl font-semibold text-gray-700 mb-4">All Feedback</h3>
+    <div class="mb-4">
+        <label for="sortSelect" class="block text-gray-600 font-medium mb-1">Sort by Rating:</label>
+        <select id="sortSelect" class="border border-gray-300 p-2 rounded w-60">
+          <option value="desc">Highest to Lowest ⭐</option>
+          <option value="asc">Lowest to Highest ⭐</option>
+        </select>
+      </div>
+      
+    <div id="feedbackList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Feedback cards will be injected here -->
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:5002/api/feedback";
+  
+    const feedbackList = document.getElementById("feedbackList");
+    const sortSelect = document.getElementById("sortSelect");
+  
+    async function fetchFeedback() {
+      try {
+        const response = await fetch(API_URL);
+        let feedbacks = await response.json();
+  
+        const sortOrder = sortSelect.value; // 'asc' or 'desc'
+  
+        // Sort based on rating
+        feedbacks.sort((a, b) => {
+          return sortOrder === 'asc' ? a.rating - b.rating : b.rating - a.rating;
+        });
+  
+        renderFeedback(feedbacks);
+      } catch (error) {
+        console.error("Error fetching feedback:", error);
+      }
+    }
+  
+    function renderFeedback(feedbacks) {
+      feedbackList.innerHTML = ""; // Clear existing content
+      feedbacks.forEach(({ name, rating, feedback }) => {
+        feedbackList.innerHTML += `
+          <div class="bg-gray-50 p-4 rounded-lg border border-gray-300 shadow-sm transition hover:shadow-md">
+            <p class="font-semibold text-lg text-gray-800 mb-1">${name}</p>
+            <p class="text-yellow-500 mb-2">${"⭐".repeat(rating)}</p>
+            <p class="text-gray-700">${feedback}</p>
+          </div>
+        `;
+      });
+    }
+  
+    // Trigger sorting whenever dropdown changes
+    sortSelect.addEventListener("change", fetchFeedback);
+  
+    // Initial load
+    fetchFeedback();
+  </script>
+  
+</body>
+</html>
