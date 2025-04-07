@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Complaint System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-100 to-indigo-200 text-gray-800">
+
+  <!-- Navigation Bar -->
+  <nav class="bg-blue-700 text-white p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-extrabold flex items-center">
+      <i class="fas fa-exclamation-circle mr-2"></i> Student Complaint System
+    </h1>
+    <div>
+      <a href="login.html" class="px-4 py-2 bg-white text-blue-700 font-semibold rounded-lg shadow-md hover:bg-gray-200 transition">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </a>
+      <a href="register.html" class="px-4 py-2 bg-yellow-400 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-500 transition ml-2">
+        <i class="fas fa-user-plus"></i> Register
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="text-center py-16 bg-gradient-to-br from-white to-blue-50 shadow-lg">
+    <h2 class="text-5xl font-extrabold text-blue-800 mb-4 animate-fade-in">
+      Welcome to the Student Complaint System
+    </h2>
+    <p class="text-lg text-gray-700 max-w-3xl mx-auto px-6 leading-relaxed">
+      A seamless, transparent, and efficient way for students to voice their concerns, 
+      track their progress, and contribute to a better academic experience.
+    </p>
+  </section>
+
+  <!-- Features Section -->
+  <section class="mt-10 flex justify-center gap-6 flex-wrap">
+    <div class="bg-white p-6 shadow-lg rounded-lg max-w-sm text-center transform hover:scale-105 transition">
+      <i class="fas fa-bullhorn text-6xl text-blue-600"></i>
+      <h3 class="text-2xl font-semibold mt-3">Report Issues</h3>
+      <p class="text-gray-600">Quickly submit complaints and ensure they are addressed efficiently.</p>
+    </div>
+
+    <div class="bg-white p-6 shadow-lg rounded-lg max-w-sm text-center transform hover:scale-105 transition">
+      <i class="fas fa-chart-line text-6xl text-green-600"></i>
+      <h3 class="text-2xl font-semibold mt-3">Track Progress</h3>
+      <p class="text-gray-600">Monitor your complaint status and get real-time updates.</p>
+    </div>
+
+    <div class="bg-white p-6 shadow-lg rounded-lg max-w-sm text-center transform hover:scale-105 transition">
+      <i class="fas fa-users text-6xl text-yellow-600"></i>
+      <h3 class="text-2xl font-semibold mt-3">Collaborate & Improve</h3>
+      <p class="text-gray-600">Provide valuable feedback to help improve student services.</p>
+    </div>
+  </section>
+
+  <!-- Quick Links Section -->
+  <section class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center mt-12">
+    <a href="#" onclick="redirectToComplaintPage()" class="bg-blue-600 text-white p-5 rounded-lg shadow-lg transform hover:scale-105 transition">
+      <i class="fas fa-file-alt text-5xl"></i>
+      <h3 class="text-xl font-bold mt-3">Submit a Complaint</h3>
+      <p class="text-sm">Easily report issues and track their resolution.</p>
+    </a>
+    <a href="Feedback.html" class="bg-green-600 text-white p-5 rounded-lg shadow-lg transform hover:scale-105 transition">
+      <i class="fas fa-comments text-5xl"></i>
+      <h3 class="text-xl font-bold mt-3">Feedback System</h3>
+      <p class="text-sm">Help improve the complaint process by sharing your feedback.</p>
+    </a>
+    <a href="Admin Contact.html" class="bg-yellow-500 text-white p-5 rounded-lg shadow-lg transform hover:scale-105 transition">
+      <i class="fas fa-user-shield text-5xl"></i>
+      <h3 class="text-xl font-bold mt-3">Admin Support</h3>
+      <p class="text-sm">Contact administrators for urgent assistance.</p>
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-16 bg-gray-800 text-white text-center py-6">
+    <p class="text-sm">&copy; 2025 Student Complaint System | Empowering Student Voices</p>
+  </footer>
+
+  <script>
+    function isLoggedIn() {
+      // Example: Check if a user token is stored in localStorage
+      return localStorage.getItem("userToken") !== null;
+    }
+  
+    function redirectToComplaintPage() {
+      if (isLoggedIn()) {
+        window.location.href = "post-complaint.html"; // Redirect to complaint page
+      } else {
+        window.location.href = "login.html"; // Redirect to login page
+      }
+    }
+  </script>
+  
+</body>
+</html>

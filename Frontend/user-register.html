@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-200 to-indigo-300 flex items-center justify-center h-screen">
+  
+  <section class="bg-white shadow-2xl rounded-2xl p-10 w-[450px] text-center">
+    <div class="mb-6">
+      <i class="fas fa-user-plus text-6xl text-blue-600"></i>
+      <h2 class="text-3xl font-bold text-gray-700 mt-3">Create an Account</h2>
+      <p class="text-gray-500 text-md">Join us and submit your complaints easily!</p>
+    </div>
+
+    <form id="userRegisterForm" class="flex flex-col space-y-4">
+      <div class="relative">
+        <input type="text" id="name" placeholder="Full Name" required 
+          class="w-full p-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <i class="fas fa-user absolute right-4 top-5 text-gray-400"></i>
+      </div>
+
+      <div class="relative">
+        <input type="email" id="email" placeholder="Email Address" required 
+          class="w-full p-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <i class="fas fa-envelope absolute right-4 top-5 text-gray-400"></i>
+      </div>
+
+      <div class="relative">
+        <input type="password" id="password" placeholder="Password" required 
+          class="w-full p-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <i class="fas fa-eye absolute right-4 top-5 text-gray-400 cursor-pointer toggle-password"></i>
+      </div>
+
+      <div class="relative">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required 
+          class="w-full p-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <i class="fas fa-eye absolute right-4 top-5 text-gray-400 cursor-pointer toggle-password"></i>
+      </div>
+
+      <p id="passwordError" class="text-red-500 text-sm hidden">Passwords do not match</p>
+
+      <button type="submit" id="registerBtn" class="bg-blue-600 text-white py-4 text-lg font-semibold rounded-xl hover:bg-blue-700 transition flex justify-center items-center shadow-md">
+        <i class="fas fa-arrow-right mr-2"></i> Register
+      </button>
+    </form>
+
+    <p class="mt-6 text-md text-gray-600">
+      Already have an account? 
+      <a href="login.html" class="text-blue-600 font-semibold hover:underline">Login</a>
+    </p>
+  </section>
+
+  <script>
+    // Toggle Password Visibility
+    document.querySelectorAll(".toggle-password").forEach(icon => {
+      icon.addEventListener("click", function () {
+        const inputField = this.previousElementSibling;
+        inputField.type = inputField.type === "password" ? "text" : "password";
+        this.classList.toggle("fa-eye-slash");
+      });
+    });
+
+    // Validate Confirm Password
+    document.getElementById("userRegisterForm").addEventListener("submit", function (event) {
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const passwordError = document.getElementById("passwordError");
+
+      if (password !== confirmPassword) {
+        event.preventDefault();
+        passwordError.classList.remove("hidden");
+      } else {
+        passwordError.classList.add("hidden");
+      }
+    });
+
+    document.getElementById("userRegisterForm").addEventListener("submit", async function (event) {
+  event.preventDefault(); // Prevent form from refreshing the page
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  if (password !== confirmPassword) {
+    document.getElementById("passwordError").classList.remove("hidden");
+    return;
+  } else {
+    document.getElementById("passwordError").classList.add("hidden");
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("✅ " + data.message);
+      window.location.href = "login.html"; // Redirect to login page
+    } else {
+      alert("❌ " + data.message);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("❌ Server error. Please try again.");
+  }
+});
+
+  </script>
+
+</body>
+</html>

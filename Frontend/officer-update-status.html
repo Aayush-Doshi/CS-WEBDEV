@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Complaint Status</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-r from-blue-200 to-indigo-300 min-h-screen flex flex-col items-center">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-700 text-white py-4 px-6 w-full flex justify-between items-center shadow-lg">
+    <h1 class="text-2xl font-bold flex items-center">
+      <i class="fas fa-edit text-3xl mr-2"></i> Update Complaint Status
+    </h1>
+    <a href="officer-dashboard.html" class="text-lg bg-gray-800 px-4 py-2 rounded-xl hover:bg-gray-900 transition shadow-md">
+      <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+    </a>
+  </nav>
+
+  <!-- Update Status Section -->
+  <section class="w-full max-w-xl bg-white shadow-2xl rounded-2xl p-6 mt-12 text-center">
+    <h3 class="text-2xl font-semibold text-gray-700 mb-4">Change Complaint Status</h3>
+    
+    <form id="updateStatusForm" class="flex flex-col items-center space-y-4">
+      
+      <!-- Complaint Dropdown -->
+      <label for="complaintSelect" class="text-lg font-semibold">Select Complaint:</label>
+      <select id="complaintSelect" required class="w-full p-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none">
+        <option value="" disabled selected>Loading complaints...</option>
+      </select>
+
+      <!-- Display Complaint Description -->
+      <p id="complaintDescription" class="text-gray-600 italic mb-2"></p>
+
+      <!-- Status Selection -->
+      <label for="status" class="text-lg font-semibold">Update Status:</label>
+      <select id="status" required class="w-full p-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none">
+        <option value="pending">⏳ Pending</option>
+        <option value="in progress">⚙️ In Progress</option>
+        <option value="resolved">✅ Resolved</option>
+      </select>
+
+      <!-- Update Button -->
+      <button type="submit" class="mt-4 bg-blue-600 text-white py-3 px-6 text-lg font-semibold rounded-xl hover:bg-blue-700 flex items-center justify-center transition">
+        <i class="fas fa-check-circle mr-2"></i> Update Status
+      </button>
+    </form>
+  </section>
+
+  <script>
+    const complaintSelect = document.getElementById("complaintSelect");
+    const complaintDescription = document.getElementById("complaintDescription");
+
+    // Fetch complaints from the server
+    async function fetchComplaints() {
+      try {
+        const response = await fetch("http://localhost:5501/api/complaints/all", {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`
+  }
+});
+
+if (!response.ok) {
+      throw new Error("Failed to fetch complaints");
+    }
+        const complaints = await response.json();
+
+        // Filter out resolved complaints
+        const unresolvedComplaints = complaints.filter(complaint => complaint.status !== "resolved");
+
+        // Populate dropdown
+        complaintSelect.innerHTML = '<option value="" disabled selected>Select a complaint</option>';
+        unresolvedComplaints.forEach(complaint => {
+          const option = document.createElement("option");
+          option.value = complaint._id;
+          option.textContent = `[ID: ${complaint._id}] ${complaint.description} - Submitted by ${complaint.submittedBy}`;
+          option.setAttribute("data-description", complaint.description);
+          complaintSelect.appendChild(option);
+        });
+
+      } catch (error) {
+        console.error("Error fetching complaints:", error);
+        complaintSelect.innerHTML = '<option value="" disabled selected>Error loading complaints</option>';
+      }
+    }
+
+    // Load complaints on page load
+    fetchComplaints();
+
+    // Show selected complaint's description
+    complaintSelect.addEventListener("change", function () {
+      const selectedOption = this.options[this.selectedIndex];
+      complaintDescription.innerText = `
+  ${selectedOption.getAttribute("data-description")}
+  (Submitted by: ${selectedOption.textContent.split(" - Submitted by ")[1] || "Unknown"})
+`;
+
+    });
+
+    // Handle status update
+    document.getElementById("updateStatusForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const selectedComplaintId = complaintSelect.value;
+      const newStatus = document.getElementById("status").value;
+
+      if (!selectedComplaintId) {
+        alert("Please select a complaint to update.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5501/api/complaints/${selectedComplaintId}/update`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem("token")}` // ✅ Add this
+  },
+  body: JSON.stringify({ status: newStatus })
+});
+
+
+        if (response.ok) {
+          alert("Complaint status updated successfully!");
+          fetchComplaints(); // Refresh the dropdown
+        } else {
+          alert("Failed to update status.");
+        }
+      } catch (error) {
+        console.error("Error updating complaint:", error);
+        alert("Error updating status.");
+      }
+    });
+  </script>
+
+</body>
+</html>
