@@ -54,7 +54,7 @@
       try {
         const response = await fetch("http://localhost:5501/api/complaints/all", {
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`
+    Authorization: `Bearer ${localStorage.getItem("officerToken")}`
   }
 });
 
@@ -108,7 +108,7 @@ if (!response.ok) {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("token")}`
+    "Authorization": `Bearer ${localStorage.getItem("officerToken")}`
   },
   body: JSON.stringify({ status: newStatus })
 });
