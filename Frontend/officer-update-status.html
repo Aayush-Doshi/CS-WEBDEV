@@ -25,16 +25,13 @@
     
     <form id="updateStatusForm" class="flex flex-col items-center space-y-4">
       
-      <!-- Complaint Dropdown -->
       <label for="complaintSelect" class="text-lg font-semibold">Select Complaint:</label>
       <select id="complaintSelect" required class="w-full p-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none">
         <option value="" disabled selected>Loading complaints...</option>
       </select>
 
-      <!-- Display Complaint Description -->
       <p id="complaintDescription" class="text-gray-600 italic mb-2"></p>
 
-      <!-- Status Selection -->
       <label for="status" class="text-lg font-semibold">Update Status:</label>
       <select id="status" required class="w-full p-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none">
         <option value="pending">⏳ Pending</option>
@@ -42,7 +39,6 @@
         <option value="resolved">✅ Resolved</option>
       </select>
 
-      <!-- Update Button -->
       <button type="submit" class="mt-4 bg-blue-600 text-white py-3 px-6 text-lg font-semibold rounded-xl hover:bg-blue-700 flex items-center justify-center transition">
         <i class="fas fa-check-circle mr-2"></i> Update Status
       </button>
@@ -67,10 +63,8 @@ if (!response.ok) {
     }
         const complaints = await response.json();
 
-        // Filter out resolved complaints
         const unresolvedComplaints = complaints.filter(complaint => complaint.status !== "resolved");
 
-        // Populate dropdown
         complaintSelect.innerHTML = '<option value="" disabled selected>Select a complaint</option>';
         unresolvedComplaints.forEach(complaint => {
           const option = document.createElement("option");
@@ -86,10 +80,8 @@ if (!response.ok) {
       }
     }
 
-    // Load complaints on page load
     fetchComplaints();
 
-    // Show selected complaint's description
     complaintSelect.addEventListener("change", function () {
       const selectedOption = this.options[this.selectedIndex];
       complaintDescription.innerText = `
@@ -116,7 +108,7 @@ if (!response.ok) {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("token")}` // ✅ Add this
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
   },
   body: JSON.stringify({ status: newStatus })
 });
@@ -124,7 +116,7 @@ if (!response.ok) {
 
         if (response.ok) {
           alert("Complaint status updated successfully!");
-          fetchComplaints(); // Refresh the dropdown
+          fetchComplaints();
         } else {
           alert("Failed to update status.");
         }

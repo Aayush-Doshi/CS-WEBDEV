@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-require("dotenv").config(); // Load environment variables
+require("dotenv").config();
 
-console.log("🔍 USER_MONGO_URI:", process.env.USER_MONGO_URI); // Debugging
+console.log("🔍 USER_MONGO_URI:", process.env.USER_MONGO_URI);
 
 const connectDB = async () => {
   try {
@@ -10,8 +10,8 @@ const connectDB = async () => {
     }
 
     const conn = await mongoose.connect(process.env.USER_MONGO_URI, {
-      useNewUrlParser: true,  // (Remove this if using latest MongoDB)
-      useUnifiedTopology: true, // (Remove this if using latest MongoDB)
+      useNewUrlParser: true, 
+      useUnifiedTopology: true,
     });
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);

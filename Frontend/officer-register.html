@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Officer Registration</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body class="bg-gradient-to-r from-blue-200 to-indigo-300 flex items-center justify-center h-screen">
   
   <section class="bg-white shadow-2xl rounded-2xl p-10 w-[450px] text-center">
     
-    <!-- Icon & Title -->
     <div class="mb-6">
       <i class="fas fa-user-shield text-6xl text-blue-600"></i>
       <h2 class="text-3xl font-bold text-gray-700 mt-3">Officer Registration</h2>
@@ -21,38 +21,32 @@
     <!-- Registration Form -->
     <form id="officerRegisterForm" class="flex flex-col space-y-4">
 
-      <!-- Full Name -->
       <div class="relative">
         <input type="text" id="name" placeholder="Full Name" required 
           class="w-full p-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
         <i class="fas fa-user absolute right-4 top-5 text-gray-400"></i>
       </div>
 
-      <!-- Email -->
       <div class="relative">
         <input type="email" id="email" placeholder="Official Email" required 
           class="w-full p-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
         <i class="fas fa-envelope absolute right-4 top-5 text-gray-400"></i>
       </div>
 
-      <!-- Password -->
       <div class="relative">
         <input type="password" id="password" placeholder="Password" required 
           class="w-full p-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
         <i class="fas fa-eye absolute right-4 top-5 text-gray-400 cursor-pointer toggle-password"></i>
       </div>
 
-      <!-- Confirm Password -->
       <div class="relative">
         <input type="password" id="confirmPassword" placeholder="Confirm Password" required 
           class="w-full p-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
         <i class="fas fa-eye absolute right-4 top-5 text-gray-400 cursor-pointer toggle-password"></i>
       </div>
 
-      <!-- Password Mismatch Error -->
       <p id="passwordError" class="text-red-500 text-sm hidden">Passwords do not match</p>
 
-      <!-- Register Button -->
       <button type="submit" id="registerBtn" 
         class="bg-blue-600 text-white py-4 text-lg font-semibold rounded-xl hover:bg-blue-700 transition flex justify-center items-center shadow-md">
         <i class="fas fa-arrow-right mr-2"></i> Register
@@ -68,7 +62,6 @@
   </section>
 
   <script>
-    // Toggle Password Visibility
     document.querySelectorAll(".toggle-password").forEach(icon => {
       icon.addEventListener("click", function () {
         const inputField = this.previousElementSibling;

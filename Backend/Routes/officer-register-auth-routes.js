@@ -13,7 +13,6 @@ router.post("/register", async (req, res) => {
 
     const { name, email, password } = req.body;
   
-    // ✅ Enforce officer email domain
     if (!email.endsWith("@collegeadmin.edu")) {
       return res.status(400).json({ message: "Use a valid institute officer email (@collegeadmin.edu)" });
     }

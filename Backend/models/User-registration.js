@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, enum: ["student", "officer"], default: "student" },
   verified: { type: Boolean, default: false },
   bio: { type: String, default: "" },
-  profilePic: { type: String, default: "" } // optional
+  profilePic: { type: String, default: "" }
 });
 
 module.exports = mongoose.model("User", UserSchema);

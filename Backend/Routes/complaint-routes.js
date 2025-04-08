@@ -7,7 +7,7 @@ const path = require("path");
 // Storage setup
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Make sure this folder exists
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -23,12 +23,12 @@ const authenticateToken = require("../middleware/auth");
 
 router.post(
   "/submit",
-  authenticateToken,                      // ✅ Secure route
+  authenticateToken,
   upload.single("supportingDoc"),
   async (req, res) => {
     try {
       const { subject, description, category } = req.body;
-      const submittedBy = req.user.email; // ✅ Extract from token
+      const submittedBy = req.user.email;
 
       const newComplaint = new Complaint({
         subject,
@@ -49,8 +49,7 @@ router.post(
   // === GET Route to Fetch Complaints by User ===
   router.get("/", authenticateToken, async (req, res) => {
     try {
-      const submittedBy = req.user.email; // force user's own email
-  
+      const submittedBy = req.user.email;
       const complaints = await Complaint.find({ submittedBy }).sort({ createdAt: -1 });
       res.status(200).json(complaints);
     } catch (err) {
@@ -61,7 +60,6 @@ router.post(
   // === GET all complaints (for officers) ===
 router.get("/all", authenticateToken, async (req, res) => {
   try {
-    // You can add additional checks here to ensure only officers can access this
     if (req.user.role !== "officer") {
       return res.status(403).json({ error: "Access denied" });
     }    
@@ -78,7 +76,6 @@ router.post("/:id/update", authenticateToken, async (req, res) => {
     const complaintId = req.params.id;
     const { status } = req.body;
 
-    // Only officers can update status
     if (req.user.role !== "officer") {
       return res.status(403).json({ error: "Access denied" });
     }

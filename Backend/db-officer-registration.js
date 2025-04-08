@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-require("dotenv").config(); // Load environment variables
-
-console.log("🔍 OFFICER_MONGO_URI:", process.env.OFFICER_MONGO_URI); // Optional debugging
+require("dotenv").config();
+console.log("🔍 OFFICER_MONGO_URI:", process.env.OFFICER_MONGO_URI);
 
 const connectOfficerDB = async () => {
   try {

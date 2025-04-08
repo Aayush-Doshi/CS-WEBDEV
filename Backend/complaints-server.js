@@ -15,15 +15,12 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
-// Support both JSON and form data (for file uploads)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/api/complaints", complaintRoutes); // ✅ This line is crucial!
+app.use("/api/complaints", complaintRoutes); 
 
-// Connect to complaints database
 mongoose.connect(process.env.COMPLAINTS_MONGO_URI)
   .then(() => console.log("✅ Complaints MongoDB Connected"))
   .catch((err) => console.error("❌ Complaints DB Connection Error:", err));

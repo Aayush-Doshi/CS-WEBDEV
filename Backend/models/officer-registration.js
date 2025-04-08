@@ -10,7 +10,7 @@ const officerSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match: /@.+\..+/ // Basic email format validation
+    match: /@.+\..+/
   },
   password: {
     type: String,

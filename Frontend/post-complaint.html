@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submit Complaint</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body class="bg-gradient-to-r from-blue-200 to-indigo-300 min-h-screen flex flex-col items-center">
 
@@ -25,7 +26,6 @@
     
     <form id="complaintForm" class="flex flex-col items-center space-y-4">
 
-      <!-- Complaint Type Dropdown -->
       <label for="complaintType" class="text-lg font-semibold">Complaint Type:</label>
       <select id="complaintType" required class="w-full p-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none">
         <option value="" disabled selected>Select Complaint Type</option>
@@ -43,26 +43,22 @@
         <option value="Other">Other</option>        
       </select>
 
-      <!-- Description -->
       <div class="relative w-full">
         <textarea id="description" placeholder="Describe your issue..." required class="w-full p-3 text-lg border rounded-xl bg-gray-50 focus:ring-2 focus:ring-blue-400 resize-none" rows="4"></textarea>
         <p id="charCount" class="text-right text-sm text-gray-500 mt-1">0/500</p>
       </div>
 
-      <!-- File Upload Section -->
       <label for="supportingDocs" id="dropArea" class="w-full bg-gray-200 text-gray-700 py-6 px-4 rounded-xl cursor-pointer flex flex-col items-center justify-center hover:bg-gray-300 transition border-dashed border-2 border-gray-400">
         <i class="fas fa-cloud-upload-alt text-4xl mb-2"></i>
         <span id="fileLabel">Drag & Drop or Click to Upload</span>
       </label>
       <input type="file" id="supportingDocs" class="hidden">
 
-      <!-- File Preview -->
       <div id="filePreview" class="hidden w-full p-4 border rounded-lg text-sm bg-gray-100">
         <p class="font-semibold">Selected File:</p>
         <p id="fileName" class="text-blue-600"></p>
       </div>
 
-      <!-- Submit Button -->
       <button type="submit" class="mt-4 bg-blue-600 text-white py-3 px-6 text-lg font-semibold rounded-xl hover:bg-blue-700 flex items-center justify-center transition">
         <i class="fas fa-paper-plane mr-2"></i> Submit Complaint
       </button>
@@ -81,17 +77,17 @@
       const complaintType = document.getElementById("complaintType").value;
       const description = document.getElementById("description").value;
       const file = document.getElementById("supportingDocs").files[0];
-      const submittedBy = localStorage.getItem("userEmail") || "student@example.com"; // Fallback email
+      const submittedBy = localStorage.getItem("userEmail") || "student@example.com";
   
       const formData = new FormData();
       formData.append("category", complaintType);
       formData.append("description", description);
-      formData.append("subject", complaintType); // or some other subject logic
+      formData.append("subject", complaintType); 
       formData.append("submittedBy", submittedBy);
       if (file) formData.append("supportingDoc", file);
   
       try {
-        const token = localStorage.getItem("userToken"); // 🧠 make sure token exists
+        const token = localStorage.getItem("userToken"); 
         console.log("Sending token:", token);
         if (!token) {
   alert("❌ User not authenticated. Please log in again.");

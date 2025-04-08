@@ -39,10 +39,9 @@
   </section>
 
   <script>
-    // Replace dummy data with live backend data
     async function fetchComplaintAnalytics() {
       try {
-        const token = localStorage.getItem("officerToken"); // Get stored JWT token
+        const token = localStorage.getItem("officerToken");
         const response = await fetch("http://localhost:5501/api/complaints/analytics", {
           headers: {
             "Authorization": `Bearer ${token}`
@@ -53,14 +52,12 @@
   
         const data = await response.json();
   
-        // Parse response data
         const statusLabels = data.statusDistribution.map(item => item._id);
         const statusCounts = data.statusDistribution.map(item => item.count);
   
         const categoryLabels = data.categoryDistribution.map(item => item._id);
         const categoryCounts = data.categoryDistribution.map(item => item.count);
   
-        // Setup charts
         const pieCtx = document.getElementById("statusPieChart").getContext("2d");
         const barCtx = document.getElementById("categoryBarChart").getContext("2d");
   
@@ -110,7 +107,6 @@
       }
     }
   
-    // Load on page load
     fetchComplaintAnalytics();
   </script>  
 </body>

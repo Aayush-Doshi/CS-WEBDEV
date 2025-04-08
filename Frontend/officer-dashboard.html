@@ -36,7 +36,6 @@
       </select>
     </div>    
     <ul id="officerComplaintsList" class="space-y-4">
-      <!-- Complaints will be dynamically loaded here -->
     </ul>
     <p id="noComplaintsMessage" class="text-gray-500 text-center hidden">No complaints available</p>
   </section>
@@ -54,7 +53,6 @@
   </a>
 </div>
 
-  <!-- Styling for Buttons -->
   <style>
     .dashboard-btn {
       display: flex;
@@ -73,11 +71,10 @@
   </style>
 
 
-  <!-- JavaScript -->
   <script>
 
 if (!localStorage.getItem("officerToken") || localStorage.getItem("userRole") !== "officer") {
-  window.location.href = "login.html"; // redirect if not logged in or not officer
+  window.location.href = "login.html";
 }
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -105,7 +102,7 @@ const response = await fetch("http://localhost:5501/api/complaints/all", {
 
 allComplaints = await response.json();
 console.log("All complaints received:", allComplaints);
-renderComplaints("desc"); // default: newest first
+renderComplaints("desc"); 
 sortOrderSelect.addEventListener("change", () => {
   const selectedOrder = sortOrderSelect.value;
   renderComplaints(selectedOrder);
@@ -154,7 +151,7 @@ function renderComplaints(order = "desc") {
     let complaintsToShow = 3;
     const renderSubset = () => {
       const visibleComplaints = complaintsArray.slice(0, complaintsToShow);
-      gridContainer.innerHTML = ""; // clear before re-render
+      gridContainer.innerHTML = ""; 
 
       visibleComplaints.forEach(complaint => {
         const card = document.createElement("div");
@@ -174,7 +171,6 @@ function renderComplaints(order = "desc") {
         gridContainer.appendChild(card);
       });
 
-      // Add "Load More" button if more complaints are left
       const loadMoreBtn = document.createElement("button");
       loadMoreBtn.className = "col-span-full mt-2 text-blue-600 hover:underline font-semibold";
       loadMoreBtn.textContent = "Load More";

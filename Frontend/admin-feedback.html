@@ -20,7 +20,6 @@
       </div>
       
     <div id="feedbackList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Feedback cards will be injected here -->
     </div>
   </div>
 
@@ -35,9 +34,8 @@
         const response = await fetch(API_URL);
         let feedbacks = await response.json();
   
-        const sortOrder = sortSelect.value; // 'asc' or 'desc'
-  
-        // Sort based on rating
+        const sortOrder = sortSelect.value; 
+
         feedbacks.sort((a, b) => {
           return sortOrder === 'asc' ? a.rating - b.rating : b.rating - a.rating;
         });
@@ -49,7 +47,7 @@
     }
   
     function renderFeedback(feedbacks) {
-      feedbackList.innerHTML = ""; // Clear existing content
+      feedbackList.innerHTML = "";
       feedbacks.forEach(({ name, rating, feedback }) => {
         feedbackList.innerHTML += `
           <div class="bg-gray-50 p-4 rounded-lg border border-gray-300 shadow-sm transition hover:shadow-md">
@@ -61,10 +59,8 @@
       });
     }
   
-    // Trigger sorting whenever dropdown changes
     sortSelect.addEventListener("change", fetchFeedback);
   
-    // Initial load
     fetchFeedback();
   </script>
   

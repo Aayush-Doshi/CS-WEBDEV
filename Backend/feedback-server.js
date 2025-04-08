@@ -1,12 +1,12 @@
 
 require("dotenv").config();
-console.log("🔍 FEEDBACK_MONGO_URI:", process.env.FEEDBACK_MONGO_URI); // Debugging
+console.log("🔍 FEEDBACK_MONGO_URI:", process.env.FEEDBACK_MONGO_URI);
 
 const express = require("express");
 const cors = require("cors");
 
-const mongoose = require("./db-feedback"); // Import MongoDB connection
-const Feedback = require("./models/feedbackModel"); // Import Mongoose model
+const mongoose = require("./db-feedback");
+const Feedback = require("./models/feedbackModel"); 
 
 const app = express();
 const PORT = 5002;
@@ -15,7 +15,7 @@ const PORT = 5002;
 app.use(express.json());
 app.use(cors());
 
-// ➤ API to Submit Feedback (POST)
+// API to Submit Feedback (POST)
 app.post("/api/feedback", async (req, res) => {
   try {
     const { name, rating, feedback } = req.body;
@@ -33,7 +33,7 @@ app.post("/api/feedback", async (req, res) => {
   }
 });
 
-// ➤ API to Get All Feedback (GET)
+// API to Get All Feedback (GET)
 app.get("/api/feedback", async (req, res) => {
   try {
     const feedbacks = await Feedback.find().sort({ createdAt: -1 }); // Get latest first

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-require("dotenv").config(); // Load environment variables
+require("dotenv").config();
 
-console.log("🔍 FEEDBACK_MONGO_URI:", process.env.FEEDBACK_MONGO_URI); // Debugging line
+console.log("🔍 FEEDBACK_MONGO_URI:", process.env.FEEDBACK_MONGO_URI);
 
 const connectDB = async () => {
   try {
@@ -21,6 +21,6 @@ const connectDB = async () => {
   }
 };
 
-connectDB(); // Connect to DB when server starts
+connectDB();
 
 module.exports = mongoose;

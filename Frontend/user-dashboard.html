@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    /* Glassmorphism Effect */
     .glass-card {
       background: rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
@@ -33,10 +32,8 @@
     <p class="text-gray-700 mt-2">View and track the status of your submitted complaints.</p>
   </section>
 
-  <!-- Complaints List Section -->
   <section class="w-full px-4 md:px-8">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="userComplaintsList">
-      <!-- Complaint cards will be dynamically added here -->
     </div>
   </section>  
 
@@ -59,14 +56,13 @@
     </a>
   </section>
 
-  <!-- JavaScript for Dynamic Complaints -->
   <script>
     document.addEventListener("DOMContentLoaded", async function () {
       const complaintList = document.getElementById("userComplaintsList");
   
       const token = localStorage.getItem("userToken");
       const userEmail = localStorage.getItem("userEmail");
-      const userName = localStorage.getItem("userName"); // make sure this is saved during login/registration
+      const userName = localStorage.getItem("userName"); 
 document.getElementById("dashboardTitle").innerHTML = `
   <i class="fas fa-user-circle mr-2"></i> ${userName || "User"}'s Dashboard
 `;

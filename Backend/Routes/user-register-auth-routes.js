@@ -37,10 +37,8 @@ router.post("/login", async (req, res) => {
   
       console.log("✅ User found:", user);
   
-      // Log stored password hash before comparison
       console.log("🔹 Stored Password Hash:", user.password);
   
-      // Compare entered password with stored hash
       const isMatch = await bcrypt.compare(password, user.password);
       console.log("🔍 Password Match Result:", isMatch);
   
@@ -66,7 +64,7 @@ router.post("/login", async (req, res) => {
       res.status(500).json({ message: "Error logging in" });
     }
   });
-// ✅ GET Profile
+// GET Profile
 router.get("/profile", authenticateToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -77,7 +75,7 @@ router.get("/profile", authenticateToken, async (req, res) => {
   }
 });
 
-// ✅ UPDATE Profile
+//  UPDATE Profile
 router.put("/profile", authenticateToken, async (req, res) => {
   const { name, bio, profilePic } = req.body;
   try {

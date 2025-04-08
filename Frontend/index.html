@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Complaint System</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body class="bg-gradient-to-r from-blue-100 to-indigo-200 text-gray-800">
 
@@ -24,7 +25,6 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <section class="text-center py-16 bg-gradient-to-br from-white to-blue-50 shadow-lg">
     <h2 class="text-5xl font-extrabold text-blue-800 mb-4 animate-fade-in">
       Welcome to the Student Complaint System
@@ -82,15 +82,14 @@
 
   <script>
     function isLoggedIn() {
-      // Example: Check if a user token is stored in localStorage
       return localStorage.getItem("userToken") !== null;
     }
   
     function redirectToComplaintPage() {
       if (isLoggedIn()) {
-        window.location.href = "post-complaint.html"; // Redirect to complaint page
+        window.location.href = "post-complaint.html";
       } else {
-        window.location.href = "login.html"; // Redirect to login page
+        window.location.href = "login.html";
       }
     }
   </script>

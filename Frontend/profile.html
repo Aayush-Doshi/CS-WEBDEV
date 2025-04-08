@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body class="bg-gradient-to-r from-blue-200 to-indigo-300 min-h-screen flex flex-col items-center">
 
@@ -23,7 +24,6 @@
   <section class="w-full max-w-xl bg-white shadow-2xl rounded-2xl p-6 mt-12 text-center">
     <h3 class="text-2xl font-semibold text-gray-700 mb-4">User Profile</h3>
 
-    <!-- Profile Picture Upload -->
     <div class="relative flex flex-col items-center">
       <label for="profilePic" class="cursor-pointer relative w-32 h-32">
         <img id="profileImg" src="https://via.placeholder.com/150" alt="Profile Picture" class="w-32 h-32 rounded-full border-4 border-gray-300 object-cover shadow-md">
@@ -34,34 +34,28 @@
       <input type="file" id="profilePic" class="hidden">
     </div>
 
-    <!-- User Info Form -->
     <form id="profileForm" class="mt-6 flex flex-col items-center space-y-4">
       
-      <!-- Name -->
       <div class="w-full text-left">
         <label for="name" class="text-lg font-semibold">Full Name:</label>
         <input type="text" id="name" placeholder="Enter your name" required class="w-full p-3 text-lg border rounded-xl bg-gray-50 focus:ring-2 focus:ring-blue-400">
       </div>
 
-      <!-- Email -->
       <div class="w-full text-left">
         <label for="email" class="text-lg font-semibold">Email:</label>
         <input type="email" id="email" placeholder="Enter your email" required class="w-full p-3 text-lg border rounded-xl bg-gray-50 focus:ring-2 focus:ring-blue-400" disabled>
       </div>
 
-      <!-- Role (Readonly) -->
 <div class="w-full text-left">
   <label for="role" class="text-lg font-semibold">Role:</label>
   <input type="text" id="role" class="w-full p-3 text-lg border rounded-xl bg-gray-100 text-gray-700" disabled>
 </div>
 
-      <!-- Bio -->
       <div class="w-full text-left">
         <label for="bio" class="text-lg font-semibold">Bio:</label>
         <textarea id="bio" placeholder="Tell something about yourself..." class="w-full p-3 text-lg border rounded-xl bg-gray-50 focus:ring-2 focus:ring-blue-400 resize-none" rows="3"></textarea>
       </div>
 
-      <!-- Save Changes Button -->
       <button type="submit" class="mt-4 bg-green-600 text-white py-3 px-6 text-lg font-semibold rounded-xl hover:bg-green-700 flex items-center justify-center transition">
         <i class="fas fa-save mr-2"></i> Save Changes
       </button>
@@ -113,13 +107,12 @@
   }
 });
 
-    // Mock API Call to Fetch User Data (Replace with Backend API)
     async function loadUserProfile() {
   try {
     const response = await fetch("http://localhost:5000/api/profile", {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`, // Include JWT token
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
       }
     });
 
@@ -127,7 +120,6 @@
 
     const userData = await response.json();
 
-    // Populate fields with real data
     document.getElementById("name").value = userData.name;
     document.getElementById("email").value = userData.email;
     document.getElementById("role").value = userData.role;
@@ -138,7 +130,6 @@
     console.error("Error loading profile:", error);
   }
 }
-    // Load user profile when the page loads
     window.onload = loadUserProfile;
   </script>
 
